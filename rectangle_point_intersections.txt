@@ -1,0 +1,3 @@
+Question:
+
+Given a set of rectangles and a point in 2D, find all the rectangles containing the point.

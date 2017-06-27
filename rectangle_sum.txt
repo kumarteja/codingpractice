@@ -1,0 +1,4 @@
+Question:
+
+Given a rectangle and a set of queries, output the answer for each query.
+Each query contains a sub rectangle inside the rectangle and we need to return the sum of all the elements inside the sub rectangle

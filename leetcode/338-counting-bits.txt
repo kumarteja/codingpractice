@@ -33,7 +33,7 @@ observe the trend
 1110
 1111
 
-Code:
+Kumar Code:
 
 class Solution {
 public:

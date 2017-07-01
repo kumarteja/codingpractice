@@ -1,0 +1,27 @@
+Reverse digits of an integer.
+
+Example1: x = 123, return 321
+Example2: x = -123, return -321
+
+click to show spoilers.
+
+Note:
+The input is assumed to be a 32-bit signed integer. Your function should return 0 when the reversed integer overflows.
+
+Kumar Logic:
+
+Finding digits and forming a number in reverse order is very easy. Same logic works for negative numbers as well because -12%10 will return -2. To check for the overflow condition form a long integer and check with integer limits
+
+Kumar Code:
+
+class Solution {
+public:
+    int reverse(int x) {
+        long res = 0;
+        while(x) {
+            res = res*10 + x%10;
+            x /= 10;
+        }
+        return (res<INT_MIN || res>INT_MAX) ? 0 : res;
+    }
+};

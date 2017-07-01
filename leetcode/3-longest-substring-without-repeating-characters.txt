@@ -1,0 +1,42 @@
+Given a string, find the length of the longest substring without repeating characters.
+
+Examples:
+
+Given "abcabcbb", the answer is "abc", which the length is 3.
+
+Given "bbbbb", the answer is "b", with the length of 1.
+
+Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+
+Kumar Logic :
+
+Preprocess the string and populate a vector pre. pre[i] contains the index of the first character after i which is equal to s[i].
+cur signifies the max length of substring with unique characters starting at i in the loop. and it can be calculated from the previous value of cur (max length starting at i+1).
+
+Kumar Code :
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s=="")
+            return 0;
+        map<char,int> mp;
+        int sz=s.length(),ans=1,cur=1;
+        vector<int> pre(sz,-1);
+        for(int i=0;i<sz;i++) {
+            if(mp.count(s[i]))
+                pre[mp[s[i]]]=i;
+            mp[s[i]]=i;
+        }
+        for(int i=sz-2;i>=0;i--) {
+            if(pre[i]==-1 || pre[i]>i+cur)
+                cur++;
+            else
+                cur=pre[i]-i;
+            if(cur>ans)
+                ans=cur;
+        }
+        return ans;
+    }
+};

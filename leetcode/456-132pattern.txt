@@ -1,0 +1,63 @@
+Given a sequence of n integers a1, a2, ..., an, a 132 pattern is a subsequence ai, aj, ak such that i < j < k and ai < ak < aj. Design an algorithm that takes a list of n numbers as input and checks whether there is a 132 pattern in the list.
+
+Note: n will be less than 15,000.
+
+Example 1:
+Input: [1, 2, 3, 4]
+
+Output: False
+
+Explanation: There is no 132 pattern in the sequence.
+Example 2:
+Input: [3, 1, 4, 2]
+
+Output: True
+
+Explanation: There is a 132 pattern in the sequence: [1, 4, 2].
+Example 3:
+Input: [-1, 3, 2, 0]
+
+Output: True
+
+Explanation: There are three 132 patterns in the sequence: [-1, 3, 2], [-1, 3, 0] and [-1, 2, 0].
+
+Kumar Code:
+
+class Solution {
+protected:
+    struct Node {
+        int st;
+        int ed;
+        Node(int s,int e): st(s),ed(e) {};
+    };
+public:
+    bool find132pattern(vector<int>& nums) {
+        list<Node*> l;
+        Node *n;
+        list<Node*>::iterator it,it2;
+        for(int i=0;i<nums.size();i++) {
+            if(l.empty() || nums[i]<l.front()->st) {
+                n=new Node(nums[i],nums[i]);
+                l.push_front(n);
+            }
+            else if(nums[i]==l.front()->st)
+                continue;
+            else {
+                if(l.front()->ed>nums[i])
+                    return true;
+                l.front()->ed=nums[i];
+                it=l.begin();
+                ++it;
+                while(it!=l.end()) {
+                    if((*it)->st>=nums[i])
+                        break;
+                    else if((*it)->ed>nums[i])
+                        return true;
+                    else
+                        it=l.erase(it);
+                }
+            }
+        }
+        return false;
+    }
+};

@@ -1,0 +1,71 @@
+Given a string S, you are allowed to convert it to a palindrome by adding characters in front of it. Find and return the shortest palindrome you can find by performing this transformation.
+
+For example:
+
+Given "aacecaaa", return "aaacecaaa".
+
+Given "abcd", return "dcbabcd".
+
+Logic : 
+
+Below code is little twisted but core logic is same. If we can find the longest palindrome which is a prefix to that string then the answer will be adding remaining characters of the string in reverse order to the front of this string.
+
+for "aacecaaa" length of the longest palindrome which is a prefix is "aacecaa" so if we add the remaining "a" to the front of this string it will be a palindrome.
+
+To find the longest palindrome which is a prefix we can use the KMP preprocess logic for building an array for the pattern which stores length of the longest prefix which is a suffix for every prefix.
+It is an O(n) algo.
+
+Build the same preprocess array for "given_string" + "#" + "reverse_given_string". "#" is added in the middle just to make sure the final answer won't be greater than length of the string if we follow the above algo.
+
+Kumar Code :
+
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        int sz=s.length();
+        bool pal=true;
+        for(int i=0;i<=(sz-1)/2;i++) {
+            if(s[i]!=s[sz-1-i]) {
+                pal=false;
+                break;
+            }
+        }
+        if(pal)
+        	return s;
+        vector<int> kmp(sz),pre(sz);
+        for(int i=1;i<sz;i++) {
+            int t=kmp[i-1];
+            while(t>=0) {
+                if(s[i]==s[t])
+                    break;
+                else if(t==0)
+                    t=-1;
+               	else
+                    t=kmp[t-1];
+            }
+            kmp[i]=t+1;
+        }
+        string rev="";
+        for(int i=sz-1;i>=0;i--)
+            rev+=s[i];
+       	for(int i=1;i<sz;i++) {
+            int t=pre[i-1];
+            while(t>=0) {
+                if(rev[i]==s[t])
+                    break;
+                else if(t==0)
+                    t=-1;
+               	else
+                    t=kmp[t-1];
+            }
+            pre[i]=t+1;
+        }
+        if(pre[sz-1]==0)
+            pre[sz-1]=1;
+        string ans="";
+        for(int i=pre[sz-1];i<sz;i++)
+            ans=s[i]+ans;
+       	ans+=s;
+        return ans;
+    }
+};
